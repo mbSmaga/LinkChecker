@@ -4,10 +4,14 @@ import com.ning.http.client.AsyncHttpClient
 
 import scala.concurrent.{Promise, Future}
 
-object WebClient {
-  private val client = new AsyncHttpClient
+trait WebClient {
+  def get(url: String)(implicit executor: Executor): Future[String]
+}
 
-  case class BadStatus(status: Int) extends RuntimeException
+case class BadStatus(status: Int) extends RuntimeException
+
+object AsyncWebClient extends WebClient {
+  private val client = new AsyncHttpClient
 
   def get(url: String)(implicit executor: Executor): Future[String] = {
     val javaFuture = client.prepareGet(url).execute()

@@ -18,8 +18,10 @@ class Getter(url: String, depth: Int) extends Actor {
     } yield link.absUrl("href")
   }
 
+  def client: WebClient = AsyncWebClient
+
   //this is same..
-  WebClient get url pipeTo self
+  client get url pipeTo self
 
   //..as this
   /*
